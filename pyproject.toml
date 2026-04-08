@@ -17,7 +17,7 @@ dependencies = [
 ]
 
 [project.scripts]
-server = "uvicorn:main"
+server = "server.app:main"
 
 [tool.uv]
 dev-dependencies = []
