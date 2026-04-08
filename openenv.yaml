@@ -1,0 +1,15 @@
+name: code_review_env
+version: 1.0.0
+description: Multi-language code review environment for AI agents
+entry_point: src.environment:CodeReviewEnv
+tags:
+  - openenv
+  - code-review
+  - multi-language
+tasks:
+  - name: review_syntax
+    difficulty: easy
+  - name: review_security
+    difficulty: medium
+  - name: review_comprehensive
+    difficulty: hard
