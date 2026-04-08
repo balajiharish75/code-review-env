@@ -20,9 +20,11 @@ class StepRequest(BaseModel):
 
 
 @app.post("/reset")
-def reset(req: ResetRequest) -> Dict[str, Any]:
+def reset(req: Optional[ResetRequest] = None) -> Dict[str, Any]:
     global env
-    env = CodeReviewEnv(task_name=req.task_name or "review_syntax", max_steps=req.max_steps or 5)
+    task_name = req.task_name if req else "review_syntax"
+    max_steps = req.max_steps if req else 5
+    env = CodeReviewEnv(task_name=task_name or "review_syntax", max_steps=max_steps or 5)
     obs = env.reset()
     return {
         "observation": obs.model_dump(),
