@@ -1,6 +1,15 @@
 from typing import List, Dict
 
 
+def clamp_score(score: float) -> float:
+    """Ensure score is strictly between 0 and 1 (not 0.0 and not 1.0)"""
+    if score <= 0.0:
+        return 0.01
+    if score >= 1.0:
+        return 0.99
+    return score
+
+
 def grade_syntax_review(agent_review: str, ground_truth: List[Dict]) -> Dict:
     """Grade syntax error detection - easy task."""
     found = []
@@ -32,6 +41,8 @@ def grade_syntax_review(agent_review: str, ground_truth: List[Dict]) -> Dict:
     
     if score == 0.0 and len(ground_truth) > 0 and len(agent_review.strip()) > 10:
         score = 0.1
+    
+    score = clamp_score(score)
     
     return {
         "score": score,
@@ -69,6 +80,8 @@ def grade_security_review(agent_review: str, ground_truth: List[Dict]) -> Dict:
     if score == 0.0 and len(ground_truth) > 0:
         if len(agent_review.strip()) > 20:
             score = 0.1
+    
+    score = clamp_score(score)
     
     return {
         "score": score,
@@ -118,6 +131,8 @@ def grade_comprehensive_review(agent_review: str, ground_truth: List[Dict]) -> D
     if score == 0.0 and len(ground_truth) > 0 and len(agent_review.strip()) > 30:
         score = 0.1
     
+    score = clamp_score(score)
+    
     return {
         "score": score,
         "issues_found": found,
@@ -136,6 +151,6 @@ def grade_task(task_name: str, agent_review: str, ground_truth: List[Dict]) -> D
     
     grader = graders.get(task_name)
     if not grader:
-        return {"score": 0.0, "issues_found": [], "issues_missed": [], "feedback": "Unknown task"}
+        return {"score": 0.01, "issues_found": [], "issues_missed": [], "feedback": "Unknown task"}
     
     return grader(agent_review, ground_truth)

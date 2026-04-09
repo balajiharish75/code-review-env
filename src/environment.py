@@ -79,11 +79,11 @@ class CodeReviewEnv:
                         partial_bonus = 0.1
                         break
         
-        reward = min(reward + partial_bonus, 1.0)
-        
+        reward = min(reward + partial_bonus, 0.99)
+
         if self.done and reward > 0:
             final_bonus = 0.05
-            reward = min(reward + final_bonus, 1.0)
+            reward = min(reward + final_bonus, 0.99)
         
         self.rewards.append(reward)
         
